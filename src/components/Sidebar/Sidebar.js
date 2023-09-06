@@ -39,54 +39,35 @@ import user from "../../Icons/user.png";
 const structure = [
   { id: 0, label: "Statistiques", link: "/app/dashboard", icon: <Dashboard /> },
  ,
-  { id: 1, label: "Projets", link: "/app/tables", icon: <ListAlt /> },
+  { id: 1, label: "Projets", link: "/app/Projets", icon: <ListAlt /> },
   {
     id: 2,
     label: "Documents",
-    link: "/app/notifications",
+    link: "/app/Documents",
     icon: <File />,
   },
+  
   {
     id: 3,
-    label: "Notifications",
-    link: "/app/ui",
-    icon: <NotificationsIcon />,
-    children: [
-      { label: "Icons", link: "/app/ui/icons" },
-      { label: "Charts", link: "/app/ui/charts" },
-      { label: "Maps", link: "/app/ui/maps" },
-    ],
+    label: "Utilisateurs",
+    link: "/app/Users",
+    icon: <SupervisorAccount/>,
+    
   },
   {
     id: 4,
-    label: "Utilisateurs",
-    link: "/app/ui",
-    icon: <SupervisorAccount/>,
-    children: [
-      { label: "Icons", link: "/app/ui/icons" },
-      { label: "Charts", link: "/app/ui/charts" },
-      { label: "Maps", link: "/app/ui/maps" },
-    ],
-  },
-  {
-    id: 5,
     label: "Acceuil",
     link: "/app/ui",
     icon: <HomeIcon />,
-    children: [
-      { label: "Icons", link: "/app/ui/icons" },
-      { label: "Charts", link: "/app/ui/charts" },
-      { label: "Maps", link: "/app/ui/maps" },
-    ],
+   
   },
-  { id: 6, type: "divider" },
-  ,
+  
 
 ];
 
 function Sidebar({ location }) {
   var classes = useStyles();
-
+  var theme = useTheme();
   // global
   var { isSidebarOpened } = useLayoutState();
   var layoutDispatch = useLayoutDispatch();
@@ -103,7 +84,6 @@ function Sidebar({ location }) {
   });
 
   return (
-<ThemeProvider theme={Theme}>
 
     <Drawer  
 
@@ -141,7 +121,6 @@ function Sidebar({ location }) {
         ))}
       </List>
     </Drawer>
-</ThemeProvider>
   );
 
   // ##################################################################
