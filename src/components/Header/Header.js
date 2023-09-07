@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import logowhite from "../../Icons/logo-white.svg";
 import {
   AppBar,
   Toolbar,
@@ -136,8 +137,9 @@ export default function Header(props) {
             />
           )}
         </IconButton>
-        <Typography variant="h6" weight="medium" className={classes.logotype}>
-          React Material Admin
+        <img src={logowhite} alt="Logo" className={classes.logoHeader} />
+        <Typography variant="h4" weight="medium" className={classes.logotype}>
+          FlowFolio
         </Typography>
         <div className={classes.grow} />
         <div
