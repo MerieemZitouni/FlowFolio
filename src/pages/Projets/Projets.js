@@ -1,61 +1,111 @@
-import React from "react";
-import { Grid } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
-import MUIDataTable from "mui-datatables";
+import React, { useState, useEffect } from "react";
+import {
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+  makeStyles,
+  
+} from "@material-ui/core";
+import { Link as RouterLink } from "react-router-dom"; // Import Link from react-router-dom
 
 // components
 import PageTitle from "../../components/PageTitle/PageTitle";
-import Widget from "../../components/Widget/Widget";
-import Table from "../dashboard/components/Table/Table";
+import { DoubleArrow } from "@material-ui/icons";
+const projectData = {
+  "projects": [
+    {
+      "name": "Project A",
+      "code": "P12345"
+    },
+    {
+      "name": "Project B",
+      "code": "P23456"
+    },
+    {
+      "name": "Project C",
+      "code": "P34567"
+    },
+    {
+      "name": "Project D",
+      "code": "P45678"
+    },
+    {
+      "name": "Project E",
+      "code": "P56789"
+    }
+  ]
+};
 
-// data
-import mock from "../dashboard/mock";
-
-const datatableData = [
-  ["Joe James", "Example Inc.", "Yonkers", "NY"],
-  ["John Walsh", "Example Inc.", "Hartford", "CT"],
-  ["Bob Herm", "Example Inc.", "Tampa", "FL"],
-  ["James Houston", "Example Inc.", "Dallas", "TX"],
-  ["Prabhakar Linwood", "Example Inc.", "Hartford", "CT"],
-  ["Kaui Ignace", "Example Inc.", "Yonkers", "NY"],
-  ["Esperanza Susanne", "Example Inc.", "Hartford", "CT"],
-  ["Christian Birgitte", "Example Inc.", "Tampa", "FL"],
-  ["Meral Elias", "Example Inc.", "Hartford", "CT"],
-  ["Deep Pau", "Example Inc.", "Yonkers", "NY"],
-  ["Sebastiana Hani", "Example Inc.", "Dallas", "TX"],
-  ["Marciano Oihana", "Example Inc.", "Yonkers", "NY"],
-  ["Brigid Ankur", "Example Inc.", "Dallas", "TX"],
-  ["Anna Siranush", "Example Inc.", "Yonkers", "NY"],
-  ["Avram Sylva", "Example Inc.", "Hartford", "CT"],
-  ["Serafima Babatunde", "Example Inc.", "Tampa", "FL"],
-  ["Gaston Festus", "Example Inc.", "Tampa", "FL"],
-];
-
-const useStyles = makeStyles(theme => ({
-  tableOverflow: {
-    overflow: 'auto'
-  }
-}))
+const useStyles = makeStyles((theme) => ({
+  card: {
+    width: "100%",
+    backgroundColor: "#3A85F4",
+    color: "white",
+    borderRadius: 10,
+    marginBottom: theme.spacing(2),
+    marginInlineStart: 4,
+    marginInline: 4,
+  },
+  cardContent: {
+    fontSize: 16,
+  },
+}));
 
 export default function Projets() {
   const classes = useStyles();
+  const [numColumns, setNumColumns] = useState(1);
+
+  useEffect(() => {
+    const calculateColumns = () => {
+      const containerWidth = document.querySelector(".container").offsetWidth;
+      const cardWidth = 340; // Updated width of each card to 340px
+      const minSpace = 2;
+      const columns = Math.floor(
+        (containerWidth - minSpace) / (cardWidth + minSpace)
+      );
+      return columns > 0 ? columns : 1;
+    };
+
+    const updateNumColumns = () => {
+      const columns = calculateColumns();
+      setNumColumns(columns);
+    };
+
+    window.addEventListener("resize", updateNumColumns);
+    updateNumColumns();
+
+    return () => {
+      window.removeEventListener("resize", updateNumColumns);
+    };
+  }, []);
+
   return (
     <>
-      <PageTitle title="Tables" />
-      <Grid container spacing={4}>
-        <Grid item xs={12}>
-          <MUIDataTable
-            title="Employee List"
-            data={datatableData}
-            columns={["Titre", "Code", "Révision Actuelle", "Status"]}
-          
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Widget title="Material-UI Table" upperTitle noBodyPadding bodyClass={classes.tableOverflow}>
-            <Table data={mock.table} />
-          </Widget>
-        </Grid>
+      <PageTitle title="Projets" />
+
+      <Grid container spacing={2} className="container">
+        {projectData.projects.map((project, index) => (
+          <Grid item xs={12} sm={6} md={4} lg={Math.floor(12 / numColumns)} key={index}>
+            <Card className={classes.card}>
+              <CardContent className={classes.cardContent}>
+               <div>
+                <Typography variant="body1" >
+                  {project.name}
+                </Typography>
+                <Typography variant="body1">
+                  {project.code}
+                </Typography>
+
+                <RouterLink to={`/app/project/${project.code}`} className={classes.link}>
+                  <DoubleArrow/>
+                  </RouterLink>
+
+                </div>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
       </Grid>
     </>
   );

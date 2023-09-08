@@ -24,6 +24,7 @@ import Header from "../Header";
 import Sidebar from "../Sidebar";
 
 // pages
+import ProjectPage from "../../pages/ProjectPage/ProjectPage";
 import Dashboard from "../../pages/dashboard";
 import Notifications from "../../pages/notifications";
 import Maps from "../../pages/maps";
@@ -52,7 +53,9 @@ function Layout(props) {
             })}
           >
             <div className={classes.fakeToolbar} />
-            <Switch>
+            <Switch>   
+            <Route   path="/app/project/:code" component={ProjectPage} />
+
               <Route path="/app/dashboard" component={Dashboard} />
               <Route path="/app/Projets" component={Projets} />
               <Route path="/app/Documents" component={Documents} />

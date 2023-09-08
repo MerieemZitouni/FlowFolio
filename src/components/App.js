@@ -10,7 +10,7 @@ import Login from "../pages/login";
 
 // context
 import { useUserState } from "../context/UserContext";
-
+import ProjectPage from "../pages/ProjectPage/ProjectPage";
 export default function App() {
   // global
   var { isAuthenticated } = useUserState();
@@ -18,6 +18,7 @@ export default function App() {
   return (
     <HashRouter>
       <Switch>
+
         <Route exact path="/" render={() => <Redirect to="/app/dashboard" />} />
         <Route
           exact
