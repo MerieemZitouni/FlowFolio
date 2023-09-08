@@ -31,16 +31,17 @@ export default makeStyles(theme => ({
     justifyContent: "center",
   },
   linkIconActive: {
-    color: theme.palette.primary.main,
+    color: "#3A85F4",
   },
   linkText: {
     padding: 0,
     color: theme.palette.text.secondary + "CC",
     transition: theme.transitions.create(["opacity", "color"]),
     fontSize: 16,
+    fontFamily:'poppins',
   },
   linkTextActive: {
-    color: theme.palette.text.primary,
+    color: "#3A85F4",
   },
   linkTextHidden: {
     opacity: 0,

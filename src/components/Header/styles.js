@@ -1,17 +1,25 @@
 import { makeStyles } from "@material-ui/styles";
 import { fade } from "@material-ui/core/styles/colorManipulator";
+import { FormatItalic } from "@material-ui/icons";
 
 export default makeStyles(theme => ({
   logotype: {
     color: "white",
-    marginLeft: theme.spacing(2.5),
+    marginLeft: theme.spacing(0),
     marginRight: theme.spacing(2.5),
     fontWeight: 500,
-    fontSize: 18,
+    fontSize: 500,
+    fontStyle:'italic',
+    fontFamily: 'poppins light',
     whiteSpace: "nowrap",
     [theme.breakpoints.down("xs")]: {
       display: "none",
     },
+  },
+  logoHeader: {
+    width:50,
+    marginLeft: theme.spacing(0),
+    marginRight: theme.spacing(1),
   },
   appBar: {
     background: "#3A85F4",
