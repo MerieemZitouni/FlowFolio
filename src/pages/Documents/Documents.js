@@ -326,17 +326,16 @@ const documents=
     </Button>
     </Stack>
 
-      <Grid container spacing={4}>
-        <Grid item xs={12}>
-          <MUIDataTable
-            title=" Documents"
-            data={documents.data}
-            columns={["Titre", "Code", "Révision Actuelle","Type", "Statut"]}
-            options={options}
-          />
+       <Grid container spacing={4}>
+          <Grid item xs={12}>
+            <MUIDataTable
+              title="Documents"
+              data={documents.data}
+              columns={columns}
+              options={options}
+            />
+          </Grid>
         </Grid>
-       
-      </Grid>
     </>
     );
   }
