@@ -1,13 +1,15 @@
 import React ,{useState}from "react";
-import { Grid ,Popover, IconButton } from "@material-ui/core";
+import { Button, Grid ,Popover, IconButton } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import MUIDataTable from "mui-datatables";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown"; // Import the arrow icon
-
+import { FilterList } from "@material-ui/icons";
+import { Add } from "@material-ui/icons";
 // components
 import PageTitle from "../../components/PageTitle/PageTitle";
 import Widget from "../../components/Widget/Widget";
 import Table from "../dashboard/components/Table/Table";
+import Stack from '@mui/material/Stack';
 
 // data
 import mock from "../dashboard/mock";
@@ -236,11 +238,22 @@ const documents=
     },
   ];
   
-  const useStyles = makeStyles((theme) => ({
+  const useStyles = makeStyles(theme => ({
     tableOverflow: {
-      overflow: "auto",
+      overflow: 'auto'
     },
-  }));
+    button:{
+      backgroundColor: "#3A85F4",
+      borderRadius: "30px",
+      textTransform: "capitalize",
+      fontFamily: "Poppins",
+    },
+    stackButtons:{
+      marginBottom: theme.spacing(2),
+      marginTop: theme.spacing(2),
+      justifyContent: 'flex-end',
+    }
+  }))
   
   const options = {
     download: false, // Remove download option
@@ -294,8 +307,26 @@ const documents=
     const classes = useStyles();
     return (
       <>
-        <PageTitle title="Tables" />
-        <Grid container spacing={4}>
+        <Stack spacing={2} direction="row" className={classes.stackButtons}>
+      <Button
+      variant="contained"
+      color = "primary"
+      startIcon={<FilterList />}
+      className={classes.button}
+    >
+      Filtrer
+    </Button>
+    <Button
+      variant="contained"
+      color = "primary"
+      startIcon={<Add />}
+      className={classes.button}
+    >
+      Ajouter
+    </Button>
+    </Stack>
+
+       <Grid container spacing={4}>
           <Grid item xs={12}>
             <MUIDataTable
               title="Documents"
@@ -305,6 +336,6 @@ const documents=
             />
           </Grid>
         </Grid>
-      </>
+    </>
     );
   }
