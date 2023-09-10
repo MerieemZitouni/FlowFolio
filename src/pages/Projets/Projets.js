@@ -58,9 +58,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#3A85F4",
     color: "white",
   },
-  searchInput: {
+ searchInput
+  : {
     width: "100%",
-    borderRadius: 25, // Rounded border
+    borderRadius: 30, // Rounded border
   },
 }));
 
@@ -132,7 +133,7 @@ export default function Projets() {
             variant="contained"
             className={classes.addButton}
             component={RouterLink}
-            to="/app/add-project"
+            to="/app/AddProjet"
           >
             Ajouter
           </Button>
