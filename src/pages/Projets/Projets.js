@@ -107,8 +107,7 @@ const useStyles = makeStyles((theme) => ({
   paperSearch:{
     p: '2px 4px', display: 'flex',borderRadius: 30, width: 350, height: 40,
   },
- searchInput
-  : {
+ searchInput: {
     width: "100%",
     borderRadius: 30, // Rounded border
   },
@@ -181,7 +180,6 @@ export default function Projets() {
             variant="contained"
             className={classes.addButton}
             component={RouterLink}
-            to="/app/add-project"
             color="primary"
             startIcon={<Add />}
             to="/app/AddProjet"
