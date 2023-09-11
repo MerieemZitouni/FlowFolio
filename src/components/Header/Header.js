@@ -292,14 +292,6 @@ export default function Header(props) {
             <Typography variant="h4" weight="medium">
               John Smith
             </Typography>
-            <Typography
-              className={classes.profileMenuLink}
-              component="a"
-              color="primary"
-              href="https://flatlogic.com"
-            >
-              Flalogic.com
-            </Typography>
           </div>
           <MenuItem
             className={classNames(
@@ -328,7 +320,6 @@ export default function Header(props) {
           <div className={classes.profileMenuUser}>
             <Typography
               className={classes.profileMenuLink}
-              color="primary"
               onClick={() => signOut(userDispatch, props.history)}
             >
               Sign Out

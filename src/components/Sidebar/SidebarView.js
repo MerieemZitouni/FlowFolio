@@ -96,6 +96,7 @@ const styles = theme => ({
     [theme.breakpoints.down("sm")]: {
       top: 0,
     }
+    
   },
   drawerOpen: {
     width: drawerWidth,

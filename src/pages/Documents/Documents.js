@@ -5,14 +5,15 @@ import MUIDataTable from "mui-datatables";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown"; // Import the arrow icon
 import { FilterList } from "@material-ui/icons";
 import { Add } from "@material-ui/icons";
+import { HashRouter, Route, Link as RouterLink } from "react-router-dom";
 // components
 import PageTitle from "../../components/PageTitle/PageTitle";
 import Widget from "../../components/Widget/Widget";
 import Table from "../dashboard/components/Table/Table";
 import Stack from '@mui/material/Stack';
-
 // data
 import mock from "../dashboard/mock";
+import { style } from "@mui/system";
 const documents=
 {
   "data": [
@@ -170,54 +171,90 @@ const documents=
     );
   }
   
+  const useStyles = makeStyles(theme => ({
+    dataTable: {
+      overflow: 'auto',
+      borderRadius: '20px',
+    },
+    button:{
+      backgroundColor: "#3A85F4",
+      borderRadius: "30px",
+      textTransform: "capitalize",
+      fontFamily: "Poppins",
+    },
+    stackButtons:{
+      marginBottom: theme.spacing(2),
+      marginTop: theme.spacing(2),
+      justifyContent: 'flex-end',
+    }
+  }))
+ 
+
+ function StyleData(value){return <div style={{ fontFamily: "poppins", }} >{value}</div>;}
+
   const columns = [
     // ... (other columns)
     {name: "Titre",
-    label: "Titre",
+    label: <div style={{ fontFamily: "poppins", fontSize: 19, color: 'grey'}}>Titre</div>,
     options: {
       filter: true,
       sort: true,
       search: true, // Enable search for this column
+      customBodyRender: (value, tableMeta, updateValue) => {
+        return StyleData(value);
+      },
     },
   },
   {
     name: "Code",
-    label: "Code",
+    label: <div style={{ fontFamily: "poppins", fontSize: 19, color: 'grey'}}>Code</div>,
     options: {
       filter: true,
       sort: true,
       search: true, // Enable search for this column
+      customBodyRender: (value, tableMeta, updateValue) => {
+        return StyleData(value);
+      },
     },
   },
   {
     name: "Révision Actuelle",
-    label: "Révision Actuelle",
+    label: <div style={{ fontFamily: "poppins", fontSize: 19, color: 'grey'}}>Révision Actuelle</div>,
     options: {
       filter: true,
       sort: true,
       search: true, // Enable search for this column
+      customBodyRender: (value, tableMeta, updateValue) => {
+        return StyleData(value);
+      },
     },
   },
   {
     name: "Type",
-    label: "Type",
+    label: <div style={{ fontFamily: "poppins", fontSize: 19, color: 'grey'}}>Type</div>,
     options: {
       filter: true,
       sort: true,
       search: true, // Enable search for this column
+      customBodyRender: (value, tableMeta, updateValue) => {
+        return StyleData(value);
+      },
     },
   },
   {
     name: "Statut",
-    label: "Statut",
+    label: <div style={{ fontFamily: "poppins", fontSize: 19, color: 'grey'}}>Statut</div>,
     options: {
       filter: true,
       sort: true,
       search: true, // Enable search for this column
+      customBodyRender: (value, tableMeta, updateValue) => {
+        return StyleData(value);
+      },
     },
   },
      { name: "Actions",
-      label: "Actions",
+      label: <div style={{ fontFamily: "poppins", fontSize: 19, color: 'grey'}}>Actions</div>,
       options: {
         filter: false,
         sort: false,
@@ -238,28 +275,13 @@ const documents=
     },
   ];
   
-  const useStyles = makeStyles(theme => ({
-    tableOverflow: {
-      overflow: 'auto'
-    },
-    button:{
-      backgroundColor: "#3A85F4",
-      borderRadius: "30px",
-      textTransform: "capitalize",
-      fontFamily: "Poppins",
-    },
-    stackButtons:{
-      marginBottom: theme.spacing(2),
-      marginTop: theme.spacing(2),
-      justifyContent: 'flex-end',
-    }
-  }))
+  
   
   const options = {
     download: false, // Remove download option
     print: false, // Remove print option
     selectableRows: "none", // Remove checkbox selection
-    filter: false,
+    filter: true,
     search: true, // Enable global search
     rowsPerPage: [10],
     textLabels: {
@@ -305,6 +327,7 @@ const documents=
   
   export default function Documents() {
     const classes = useStyles();
+    const link = "/app/add-document";
     return (
       <>
         <Stack spacing={2} direction="row" className={classes.stackButtons}>
@@ -321,21 +344,25 @@ const documents=
       color = "primary"
       startIcon={<Add />}
       className={classes.button}
+      component={RouterLink}
+      to={link}
     >
       Ajouter
     </Button>
     </Stack>
 
        <Grid container spacing={4}>
-          <Grid item xs={12}>
+          <Grid item xs={12} >
             <MUIDataTable
-              title="Documents"
+              title=<div style={{ fontFamily: "poppins", fontSize: 30, fontWeight:"bold" }}>Documents</div>
               data={documents.data}
               columns={columns}
               options={options}
+              className={classes.dataTable}
             />
           </Grid>
         </Grid>
+        
     </>
     );
   }

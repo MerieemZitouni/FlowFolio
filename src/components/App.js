@@ -11,6 +11,7 @@ import Login from "../pages/login";
 // context
 import { useUserState } from "../context/UserContext";
 import ProjectPage from "../pages/ProjectPage/ProjectPage";
+import FormDoc from "../pages/formDoc/FormDoc";
 export default function App() {
   // global
   var { isAuthenticated } = useUserState();

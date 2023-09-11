@@ -16,7 +16,7 @@ import classnames from "classnames";
 import useStyles from "./styles";
 
 // logo
-import logo from "./logo.svg";
+import logo from "./logo-white.svg";
 import google from "../../images/google.svg";
 
 // context
@@ -40,7 +40,7 @@ function Login(props) {
     <Grid container className={classes.container}>
       <div className={classes.logotypeContainer}>
         <img src={logo} alt="logo" className={classes.logotypeImage} />
-        <Typography className={classes.logotypeText}>Material Admin</Typography>
+        <Typography className={classes.logotypeText}>FlowFolio</Typography>
       </div>
       <div className={classes.formContainer}>
         <div className={classes.form}>
@@ -244,9 +244,7 @@ function Login(props) {
             </React.Fragment>
           )}
         </div>
-        <Typography color="primary" className={classes.copyright}>
-        © 2014-{new Date().getFullYear()} <a style={{ textDecoration: 'none', color: 'inherit' }} href="https://flatlogic.com" rel="noopener noreferrer" target="_blank">Flatlogic</a>, LLC. All rights reserved.
-        </Typography>
+        
       </div>
     </Grid>
   );

@@ -143,6 +143,7 @@ export default makeStyles(theme => ({
   },
   profileMenuLink: {
     fontSize: 16,
+    color: "#3A85F4",
     textDecoration: "none",
     "&:hover": {
       cursor: "pointer",

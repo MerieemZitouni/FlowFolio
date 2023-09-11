@@ -8,10 +8,14 @@ import {
   Button,
   TextField,
   InputAdornment,
+  Paper,
 } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";
 import { DoubleArrow, Search as SearchIcon } from "@material-ui/icons";
-
+import Stack from '@mui/material/Stack';
+import InputBase from '@mui/material/InputBase';
+import IconButton from '@mui/material/IconButton';
+import { Add } from "@material-ui/icons";
 // components
 import PageTitle from "../../components/PageTitle/PageTitle";
 
@@ -45,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     backgroundColor: "#3A85F4",
     color: "white",
-    borderRadius: 10,
+    borderRadius: 31,
     marginBottom: theme.spacing(2),
     marginInlineStart: 4,
     marginInline: 4,
@@ -57,10 +61,51 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
     backgroundColor: "#3A85F4",
     color: "white",
+    borderRadius: "30px",
+    textTransform: "capitalize",
+    fontFamily: "Poppins",
+    height: 36,
   },
   searchInput: {
-    width: "100%",
-    borderRadius: 25, // Rounded border
+    fontFamily: 'Poppins',
+    textIndent: 10,
+    caretColor: '#D3D3D3',
+    '&::placeholder': {
+    fontSize: 15,
+    fontFamily: 'Poppins',
+    textIndent: 10,
+    },
+  },
+  nameText: {
+    fontFamily: "Poppins",
+    fontWeight: "bold",
+    fontSize: 20,
+    opacity: 0.95,
+    whiteSpace: "nowrap",
+  },
+  codeText:{
+    fontFamily: "Poppins",
+    fontSize: 18,
+    whiteSpace: "nowrap",
+  },
+  linkIcon: {
+    fontSize: 50,
+    overflow: "auto",
+    //marginLeft: theme.spacing(17),
+  },
+  RouterLink: {
+    },
+  Stack:{
+    display: 'flex',
+    justifyContent: 'space-around',
+  },
+  stackSearch:{
+    display: 'flex',
+    marginBottom: theme.spacing(6),
+    justifyContent: 'space-between',
+  },
+  paperSearch:{
+    p: '2px 4px', display: 'flex',borderRadius: 30, width: 350, height: 40,
   },
 }));
 
@@ -110,33 +155,38 @@ export default function Projets() {
   return (
     <>
       <PageTitle title="Projets" />
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6} md={6} lg={6}>
-          <TextField
-            className={classes.searchInput}
-            variant="outlined"
-            placeholder="Rechercher par code ou titre"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={6} lg={6}>
-          <Button
+      <Stack spacing={4} direction="row" className={classes.stackSearch}>
+      <Paper
+       component="form"
+        className={classes.paperSearch} >
+      <InputBase
+        sx={{ ml: 1, flex: 1 }}
+        placeholder="Recherchez par code ou par titre"
+        inputProps={{ 'aria-label': 'Recherche' ,className: classes.searchInput,}}
+        value={searchQuery}
+        onChange={handleSearchChange}
+      />
+      <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+        <SearchIcon />
+      </IconButton>
+      </Paper>
+
+      <Button
             variant="contained"
             className={classes.addButton}
             component={RouterLink}
             to="/app/add-project"
+            color="primary"
+            startIcon={<Add />}
           >
-            Ajouter
+            Ajouter un projet
           </Button>
-        </Grid>
+      </Stack>
+
+
+      <Grid container spacing={2}>
+        
+        
         {filteredProjects.map((project, index) => (
           <Grid
             item
@@ -148,17 +198,18 @@ export default function Projets() {
           >
             <Card className={classes.card}>
               <CardContent className={classes.cardContent}>
-                <div>
-                  <Typography variant="body1">{project.name}</Typography>
-                  <Typography variant="body1">{project.code}</Typography>
-
+                <Stack spacing={0} direction="row" className={classes.Stack}>
+                  <div>
+                  <Typography className={classes.nameText} variant="body1">{project.name}</Typography>
+                  <Typography className={classes.codeText} variant="body1">{project.code}</Typography>
+                  </div>
                   <RouterLink
                     to={`/app/project/${project.code}`}
-                    className={classes.link}
+                    className={classes.RouterLink}
                   >
-                    <DoubleArrow />
+                    <DoubleArrow className={classes.linkIcon}/>
                   </RouterLink>
-                </div>
+                  </Stack>
               </CardContent>
             </Card>
           </Grid>

@@ -12,7 +12,7 @@ export default makeStyles(theme => ({
     left: 0,
   },
   logotypeContainer: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: "#3A85F4",
     width: "60%",
     height: "100%",
     display: "flex",
@@ -27,13 +27,15 @@ export default makeStyles(theme => ({
     },
   },
   logotypeImage: {
-    width: 165,
+    width: 200,
     marginBottom: theme.spacing(4),
   },
   logotypeText: {
     color: "white",
     fontWeight: 500,
     fontSize: 84,
+    fontFamily: 'poppins light',
+    fontStyle:'italic',
     [theme.breakpoints.down("md")]: {
       fontSize: 48,
     },
