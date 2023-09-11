@@ -34,6 +34,7 @@ import Charts from "../../pages/charts";
 import Projets from "../../pages/Projets/Projets";
 import Users from "../../pages/Users/Users";
 import FormDoc from "../../pages/formDoc/FormDoc";
+import AddProjet from "../AddProjet/AddProjet";
 // context
 import { useLayoutState } from "../../context/LayoutContext";
 
@@ -63,6 +64,7 @@ function Layout(props) {
               <Route path="/app/notifications" component={Notifications} />
               <Route path="/app/Users" component={Users} />
               <Route path="/app/add-document" component={FormDoc} />
+              <Route   path="/app/AddProjet" component={AddProjet} />
 
               <Route
                 exact
