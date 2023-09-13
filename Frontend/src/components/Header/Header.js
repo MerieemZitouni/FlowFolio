@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import logowhite from "../../Icons/logo-white.svg";
 import {
   AppBar,
@@ -37,6 +37,7 @@ import {
   toggleSidebar,
 } from "../../context/LayoutContext";
 import { useUserDispatch, signOut } from "../../context/UserContext";
+
 
 const messages = [
   {
@@ -98,6 +99,7 @@ export default function Header(props) {
   var layoutState = useLayoutState();
   var layoutDispatch = useLayoutDispatch();
   var userDispatch = useUserDispatch();
+  var userDispatch = useUserDispatch();
 
   // local
   var [mailMenu, setMailMenu] = useState(null);
@@ -108,6 +110,17 @@ export default function Header(props) {
   var [isSearchOpen, setSearchOpen] = useState(false);
   var [login, setLoginValue] = useState("");
   var [role, setRole] = useState("");
+
+  function handle() {
+    Profile(userDispatch, setLoginValue, setRole)
+      .then(({ login, role }) => {
+        console.log(login, role);
+      })
+      .catch((error) => {
+        console.error("Error fetching user profile:", error);
+      });
+  }
+  
 
 
   return (
@@ -288,7 +301,7 @@ export default function Header(props) {
           open={Boolean(profileMenu)}
           anchorEl={profileMenu}
           onClose={() => setProfileMenu(null)}
-          onClick={()=>Profile(userDispatch,login,role)}
+          onClick={()=>handle()}
           className={classes.headerMenu}
           classes={{ paper: classes.profileMenu }}
           disableAutoFocusItem

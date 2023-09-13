@@ -14,6 +14,8 @@ function userReducer(state, action) {
       return { ...state,err:true, isAuthenticated: false };
     case "SIGN_OUT_SUCCESS":
       return { ...state,isAuthenticated: false };
+    case "STORE_USER_PROFILE":
+      return { ...state, userProfile: action.payload };
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -71,8 +73,15 @@ function loginUser(dispatch, login, password, history, setIsLoading, setError,er
         // Handle the successful response from the backend
         console.log(response);
        
+        const { token, user_id } = response.data; // Assuming your response contains a 'token' field
+
         setError(false); // Reset error state on success
         setIsLoading(false);
+
+        // Store the token in local storage
+        localStorage.setItem("id_token", token);
+        localStorage.setItem("user_id", user_id);
+
         dispatch({ type: 'LOGIN_SUCCESS' });
         history.push('/app/dashboard');
       })
@@ -94,17 +103,60 @@ function loginUser(dispatch, login, password, history, setIsLoading, setError,er
 }
 
 function signOut(dispatch, history) {
-  localStorage.removeItem("id_token");
-  dispatch({ type: "SIGN_OUT_SUCCESS" });
-  history.push("/login");
+  const token = localStorage.getItem("id_token");
+
+  if (token) {
+    try {
+      // Make a POST request to the logout endpoint on the backend
+       axios.post('http://127.0.0.1:8000/api/logout', null, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Use Bearer token format
+        },
+      });
+
+      // Remove the token from localStorage
+      localStorage.removeItem("id_token");
+
+      // Dispatch a sign out success action if you're using Redux
+      // This action should update your application state accordingly
+      dispatch({ type: "SIGN_OUT_SUCCESS" });
+
+      // Redirect the user to the login page using React Router
+      history.push("/login");
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  }
 }
 
-function Profile(dispatch,login,role)
-{
-  client.get("/api/user")
-  .then(function(res) {
-    console.log(res);    })
-  .catch(function(error) {
-  
-  });
+function Profile(dispatch,setLoginValue,setRole) {
+  const token = localStorage.getItem("id_token");
+  if (!token) {
+    // Token is not available, handle the case accordingly (e.g., redirect to login page)
+    return;
+  }
+
+  axios
+    .get('http://127.0.0.1:8000/api/user', {
+      headers: {
+        Authorization: `Token ${token}`, // Include the token in the request headers
+      },
+    })
+    .then(response => {
+      // Handle the successful response from the backend
+      console.log(response);
+      const { username, role } = response.data; // Assuming your response contains a 'token' field
+      setLoginValue(username);
+      setRole(role);
+      // Dispatch an action to store the user profile data in your application state
+      dispatch({ type: 'STORE_USER_PROFILE', payload: response.data });
+      console.log(username,role);
+      return(username,role);
+    })
+    .catch(error => {
+      // Handle any errors (e.g., unauthorized access)
+      console.error(error);
+    });
 }
+
+

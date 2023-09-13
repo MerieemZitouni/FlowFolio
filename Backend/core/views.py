@@ -6,6 +6,8 @@ from rest_framework.response import Response
 from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer
 from rest_framework import permissions, status
 from .validations import custom_validation, validate_email, validate_password
+from rest_framework.authtoken.models import Token
+from rest_framework.authentication import TokenAuthentication
 
 
 class UserRegister(APIView):
@@ -34,21 +36,31 @@ class UserLogin(APIView):
 			user = serializer.check_user(data)
 			login(request, user) 
 			print(serializer.data)
-			return Response(serializer.data, status=status.HTTP_200_OK)
+			token, created = Token.objects.get_or_create(user=user)
+			return Response({'token': token.key, 'user_id': user.user_id}, status=status.HTTP_200_OK)
+
 
 
 class UserLogout(APIView):
-	permission_classes = (permissions.AllowAny,)
-	authentication_classes = ()
-	def post(self, request):
-		logout(request)
-		return Response(status=status.HTTP_200_OK)
+	
+    permission_classes = [permissions.IsAuthenticated]
 
+    def post(self, request):
+        # Simply delete the token from the client-side
+        request.auth.delete()
+        return Response({'message': 'Successfully logged out'})
 
 class UserView(APIView):
-	permission_classes = (permissions.IsAuthenticated,)
-	authentication_classes = (SessionAuthentication,)
-	##
-	def get(self, request):
-		serializer = UserSerializer(request.user)
-		return Response({'user': serializer.data}, status=status.HTTP_200_OK)
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        # You can customize the data you want to return here
+        user_data = {
+            'id': user.user_id,
+            'username': user.username,
+            'role': user.role,
+            # Add more fields as needed
+        }
+        return Response(user_data)
