@@ -129,14 +129,15 @@ function signOut(dispatch, history) {
   }
 }
 
-function Profile(dispatch,setLoginValue,setRole) {
+function Profile(dispatch, setLoginValue, setRole) {
   const token = localStorage.getItem("id_token");
+
   if (!token) {
     // Token is not available, handle the case accordingly (e.g., redirect to login page)
-    return;
+    return Promise.reject("Token not available");
   }
 
-  axios
+  return axios
     .get('http://127.0.0.1:8000/api/user', {
       headers: {
         Authorization: `Token ${token}`, // Include the token in the request headers
@@ -150,13 +151,12 @@ function Profile(dispatch,setLoginValue,setRole) {
       setRole(role);
       // Dispatch an action to store the user profile data in your application state
       dispatch({ type: 'STORE_USER_PROFILE', payload: response.data });
-      console.log(username,role);
-      return(username,role);
+      console.log(username, role);
+      return { login: username, role };
     })
     .catch(error => {
       // Handle any errors (e.g., unauthorized access)
       console.error(error);
+      return Promise.reject(error);
     });
 }
-
-

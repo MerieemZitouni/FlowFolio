@@ -8,7 +8,7 @@ import {
 import classnames from "classnames";
 import {Box, IconButton, Link} from '@material-ui/core'
 import Icon from '@mdi/react'
-
+import { FormProvider } from "../../context/AddProjetContext";
 //icons
 import {
   mdiFacebook as FacebookIcon,
@@ -63,9 +63,11 @@ function Layout(props) {
               <Route path="/app/Documents" component={Documents} />
               <Route path="/app/notifications" component={Notifications} />
               <Route path="/app/Users" component={Users} />
-              <Route path="/app/add-document" component={FormDoc} />
-              <Route  path="/app/AddProjet" component={AddProjet} />
-
+             <Route path="/app/add-document" component={FormDoc} />
+               {/* Wrap AddProjet with FormProvider */}
+              <FormProvider>
+              <Route path="/app/AddProjet" component={AddProjet} />
+            </FormProvider>
               <Route
                 exact
                 path="/app/ui"

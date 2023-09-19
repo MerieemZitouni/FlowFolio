@@ -3,12 +3,12 @@ from django.contrib.auth import get_user_model, login, logout
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer
+from .serializers import *
 from rest_framework import permissions, status
 from .validations import custom_validation, validate_email, validate_password
 from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
-
+from .models import *
 
 class UserRegister(APIView):
 	#access by anyone 
@@ -64,3 +64,42 @@ class UserView(APIView):
             # Add more fields as needed
         }
         return Response(user_data)
+class AddProjet(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        data = request.data
+        print(data)
+        nom = data.get('nom', '')
+        code_projet = data.get('codeProjet', '')
+
+        # Create a new Projet instance with the extracted data
+        projet = Projet.objects.create(nom=nom, code=code_projet)
+        # ...
+
+# Extract the 'champsCodification' data
+        champs_codification = data.get('champsCodification', [])
+
+        # Loop through the 'champsCodification' data and create ChampCodification instances
+        for champ_data in champs_codification:
+            titre = champ_data.get('titre', '')
+            nb_caracteres = champ_data.get('nbCaracteres', 0)
+            type_champ = champ_data.get('typeChamp', '')
+
+            # Create a new ChampCodification instance for each item
+            ChampCodification.objects.create(
+                projet=projet,
+                nom_champ=titre,
+                taille_champ=nb_caracteres,
+                type_champ=type_champ
+            )
+
+        # You can return a success response or any other response you need
+        return Response({"message": "Projet added successfully"}, status=status.HTTP_201_CREATED)
+    
+class projets(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    def get(self, request):
+        queryset = Projet.objects.all()
+        serializer = ProjetSerializer(queryset, many=True)  # Serialize the queryset
+        return Response(serializer.data)  # Pass the serialized data to the Response object

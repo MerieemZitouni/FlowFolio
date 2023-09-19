@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
+import useAddProjetContext from '../../hooks/useAddProjetContext';
 
 const useStyles = makeStyles((theme) => ({
   stackSearch:{
@@ -92,13 +93,14 @@ function CustomizedInputBase({ placeholder, value, onChange }) {
   );
 }
 
-function CodificationStep({
-  formData,
-  nouveauChamp,
-  handleAdd,
-  handleChampChange,
-  handleChampDelete,
-}) {
+function CodificationStep() {
+  const {
+    handleChampChange,
+    nouveauChamp,
+    handleAdd,
+    formValues,
+    handleChampDelete
+  }=useAddProjetContext()
   const classes = useStyles();
 
   return (
@@ -144,7 +146,7 @@ function CodificationStep({
           </Button>
         </Grid>
       </Grid>
-      {formData.champsCodification.map((champ, index) => (
+      {formValues.champsCodification.map((champ, index) => (
         <Grid container spacing={2} key={index}>
           <Grid item xs={12}>
             <CustomizedInputBase

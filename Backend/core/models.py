@@ -47,20 +47,21 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 
 class Projet(models.Model):
     nom = models.CharField(max_length=255)
-    date = models.DateField()
+    date =  models.DateField( auto_now=True) 
     code = models.CharField(max_length=10, unique=True)
-
+   
 class ChampCodification(models.Model):
     projet = models.ForeignKey(Projet, on_delete=models.CASCADE)
     nom_champ = models.CharField(max_length=100)
     taille_champ = models.PositiveIntegerField()
     type_champ = models.CharField(max_length=50)
 
-
-class Document(models.Model):    
+  
+class Document(models.Model):  
     projet = models.ForeignKey(Projet, on_delete=models.CASCADE)
-    code = models.CharField(max_length=20, unique=True)
-    date = models.DateField()
+    code = models.CharField(max_length=20, unique=True,primary_key=True)
+    titre=models.CharField(max_length=30)
+    date = models.DateField( auto_now=True)   
     statut = models.CharField(max_length=50)
     revision_actuelle = models.CharField(max_length=10)
     type = models.CharField(max_length=50)
@@ -71,9 +72,15 @@ class Revision(models.Model):
     doc = models.ForeignKey(Document, on_delete=models.CASCADE)
     numero_revision = models.CharField(max_length=10)
     fichier = models.FileField(upload_to='revisions/')
-    commentaire = models.TextField()
     #la personne qui a téléchargé le fichier
     user= models.ForeignKey(AppUser,on_delete=models.CASCADE)
+
+class Commentaire(models.Model):
+    user=models.ForeignKey(AppUser,on_delete=models.CASCADE)
+    description=models.TextField()
+    Commentaire=models.TextField()
+    revision=models.ForeignKey(Revision,on_delete=models.CASCADE)
+
 
 class AccesDoc(models.Model):
     doc = models.ForeignKey(Document, on_delete=models.CASCADE)

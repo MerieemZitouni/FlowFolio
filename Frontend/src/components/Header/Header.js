@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import logowhite from "../../Icons/logo-white.svg";
 import {
   AppBar,
@@ -8,7 +8,7 @@ import {
   Menu,
   MenuItem,
   Fab,
-  Link
+  Link,
 } from "@material-ui/core";
 import {
   Menu as MenuIcon,
@@ -21,7 +21,7 @@ import {
 } from "@material-ui/icons";
 import classNames from "classnames";
 
-import {Profile} from "../../context/UserContext";
+import { Profile } from "../../context/UserContext";
 // styles
 import useStyles from "./styles";
 
@@ -37,7 +37,6 @@ import {
   toggleSidebar,
 } from "../../context/LayoutContext";
 import { useUserDispatch, signOut } from "../../context/UserContext";
-
 
 const messages = [
   {
@@ -58,14 +57,14 @@ const messages = [
     id: 2,
     variant: "primary",
     name: "Mark Winstein",
-    message: "I want rearrange the appointment",
+    message: "I want to rearrange the appointment",
     time: "9:15",
   },
   {
     id: 3,
     variant: "secondary",
     name: "Liana Dutti",
-    message: "Good news from sale department",
+    message: "Good news from the sales department",
     time: "9:09",
   },
 ];
@@ -88,7 +87,7 @@ const notifications = [
     id: 3,
     color: "primary",
     type: "e-commerce",
-    message: "12 new orders has arrived today",
+    message: "12 new orders have arrived today",
   },
 ];
 
@@ -98,7 +97,6 @@ export default function Header(props) {
   // global
   var layoutState = useLayoutState();
   var layoutDispatch = useLayoutDispatch();
-  var userDispatch = useUserDispatch();
   var userDispatch = useUserDispatch();
 
   // local
@@ -110,18 +108,26 @@ export default function Header(props) {
   var [isSearchOpen, setSearchOpen] = useState(false);
   var [login, setLoginValue] = useState("");
   var [role, setRole] = useState("");
+  var [showProfile, setShowProfile] = useState(false);
 
-  function handle() {
-    Profile(userDispatch, setLoginValue, setRole)
+  useEffect(() => {
+    // Call the Profile function when the component mounts
+   
+  }, [showProfile]);
+  function handleProfileClick(e) {
+    setProfileMenu(e.currentTarget);
+   Profile(userDispatch, setLoginValue, setRole)
       .then(({ login, role }) => {
         console.log(login, role);
+        setLoginValue(login);
+        setRole(role);
+        setShowProfile(true);
+        console.log(role, login);
       })
       .catch((error) => {
         console.error("Error fetching user profile:", error);
       });
   }
-  
-
 
   return (
     <AppBar position="fixed" className={classes.appBar}>
@@ -131,7 +137,7 @@ export default function Header(props) {
           onClick={() => toggleSidebar(layoutDispatch)}
           className={classNames(
             classes.headerMenuButtonSandwich,
-            classes.headerMenuButtonCollapse,
+            classes.headerMenuButtonCollapse
           )}
         >
           {layoutState.isSidebarOpened ? (
@@ -139,7 +145,7 @@ export default function Header(props) {
               classes={{
                 root: classNames(
                   classes.headerIcon,
-                  classes.headerIconCollapse,
+                  classes.headerIconCollapse
                 ),
               }}
             />
@@ -148,7 +154,7 @@ export default function Header(props) {
               classes={{
                 root: classNames(
                   classes.headerIcon,
-                  classes.headerIconCollapse,
+                  classes.headerIconCollapse
                 ),
               }}
             />
@@ -184,14 +190,16 @@ export default function Header(props) {
           color="inherit"
           aria-haspopup="true"
           aria-controls="mail-menu"
-          onClick={e => {
+          onClick={(e) => {
             setNotificationsMenu(e.currentTarget);
             setIsNotificationsUnread(false);
           }}
           className={classes.headerMenuButton}
         >
           <Badge
-            badgeContent={isNotificationsUnread ? notifications.length : null}
+            badgeContent={
+              isNotificationsUnread ? notifications.length : null
+            }
             color="warning"
           >
             <NotificationsIcon classes={{ root: classes.headerIcon }} />
@@ -201,16 +209,13 @@ export default function Header(props) {
           color="inherit"
           aria-haspopup="true"
           aria-controls="mail-menu"
-          onClick={e => {
+          onClick={(e) => {
             setMailMenu(e.currentTarget);
             setIsMailsUnread(false);
           }}
           className={classes.headerMenuButton}
         >
-          <Badge
-            badgeContent={isMailsUnread ? messages.length : null}
-            color="secondary"
-          >
+          <Badge badgeContent={isMailsUnread ? messages.length : null} color="secondary">
             <MailIcon classes={{ root: classes.headerIcon }} />
           </Badge>
         </IconButton>
@@ -219,8 +224,11 @@ export default function Header(props) {
           color="inherit"
           className={classes.headerMenuButton}
           aria-controls="profile-menu"
-          onClick={e => setProfileMenu(e.currentTarget)}
-        >
+          onClick={(e) => {
+            handleProfileClick(e);
+            
+          }}
+                  >
           <AccountIcon classes={{ root: classes.headerIcon }} />
         </IconButton>
         <Menu
@@ -237,15 +245,11 @@ export default function Header(props) {
             <Typography variant="h4" weight="medium">
               New Messages
             </Typography>
-            <Typography
-              className={classes.profileMenuLink}
-              component="a"
-              color="secondary"
-            >
+            <Typography className={classes.profileMenuLink} component="a" color="secondary">
               {messages.length} New Messages
             </Typography>
           </div>
-          {messages.map(message => (
+          {messages.map((message) => (
             <MenuItem key={message.id} className={classes.messageNotification}>
               <div className={classes.messageNotificationSide}>
                 <UserAvatar color={message.variant} name={message.name} />
@@ -253,12 +257,7 @@ export default function Header(props) {
                   {message.time}
                 </Typography>
               </div>
-              <div
-                className={classNames(
-                  classes.messageNotificationSide,
-                  classes.messageNotificationBodySide,
-                )}
-              >
+              <div className={classNames(classes.messageNotificationSide, classes.messageNotificationBodySide)}>
                 <Typography weight="medium" gutterBottom>
                   {message.name}
                 </Typography>
@@ -268,12 +267,7 @@ export default function Header(props) {
               </div>
             </MenuItem>
           ))}
-          <Fab
-            variant="extended"
-            color="primary"
-            aria-label="Add"
-            className={classes.sendMessageButton}
-          >
+          <Fab variant="extended" color="primary" aria-label="Add" className={classes.sendMessageButton}>
             Send New Message
             <SendIcon className={classes.sendButtonIcon} />
           </Fab>
@@ -286,7 +280,7 @@ export default function Header(props) {
           className={classes.headerMenu}
           disableAutoFocusItem
         >
-          {notifications.map(notification => (
+          {notifications.map((notification) => (
             <MenuItem
               key={notification.id}
               onClick={() => setNotificationsMenu(null)}
@@ -301,31 +295,33 @@ export default function Header(props) {
           open={Boolean(profileMenu)}
           anchorEl={profileMenu}
           onClose={() => setProfileMenu(null)}
-          onClick={()=>handle()}
           className={classes.headerMenu}
           classes={{ paper: classes.profileMenu }}
           disableAutoFocusItem
         >
           <div className={classes.profileMenuUser}>
-            <Typography variant="h4" weight="medium">
-           
-            </Typography>
+            {showProfile && (
+              <>
+                <Typography variant="h4" weight="medium">
+                  {login}
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  {role}
+                </Typography>
+              </>
+            )}
           </div>
           <MenuItem
             className={classNames(
               classes.profileMenuItem,
-              classes.headerMenuItem,
+              classes.headerMenuItem
             )}
           >
             <AccountIcon className={classes.profileMenuIcon} /> Profile
           </MenuItem>
-       
-        
+
           <div className={classes.profileMenuUser}>
-            <Typography
-              className={classes.profileMenuLink}
-              onClick={() => signOut(userDispatch, props.history)}
-            >
+            <Typography className={classes.profileMenuLink} onClick={() => signOut(userDispatch, props.history)}>
               Sign Out
             </Typography>
           </div>

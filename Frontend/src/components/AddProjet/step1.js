@@ -8,6 +8,8 @@ import {
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
+import useAddProjetContext from '../../hooks/useAddProjetContext';
+
 const useStyles = makeStyles((theme) => ({
   gridBottom: {
     display: 'flex',
@@ -59,26 +61,45 @@ const useStyles = makeStyles((theme) => ({
   
   }));
   
-  
-  function CustomizedInputBase({placeholder,width,label}) {
+  function CustomizedInputBase({ placeholder, width, name, value, onChange }) {
     const classes = useStyles();
+    const {
+      formValues,
+      handleChange,
+    }=useAddProjetContext()
+  
     return (
       <Paper
         component="form"
-        sx={{ p: '2px 4px', display: 'flex',borderRadius: '11px', alignItems: 'center', width: width,height: "45px"}}
+        sx={{
+          p: '2px 4px',
+          display: 'flex',
+          borderRadius: '11px',
+          alignItems: 'center',
+          width: width,
+          height: '45px',
+        }}
       >
-        
         <InputBase
           sx={{ ml: 1, flex: 1 }}
           placeholder={placeholder}
-          inputProps={{ 'aria-label': 'Recherche' ,className:classes.textInput }}
+          value={value}
+          name={name}
+          onChange={onChange} //// Bind to handleInputChange
+          inputProps={{ 'aria-label': 'Recherche', className: classes.textInput }}
         />
       </Paper>
     );
   }
   
-function InformationsStep({ formData, handleChange }) {
+function InformationsStep() {
+  const {
+    formValues,
+    handleChange,
+  }=useAddProjetContext()
+
   const classe1 = useStyles();
+
 
   return (
     <Stack spacing={2} direction="row" className={classe1.stackInput}>
@@ -90,20 +111,24 @@ function InformationsStep({ formData, handleChange }) {
     <Stack spacing={2} direction="column" >
 
    
-        <CustomizedInputBase
-          placeholder="Nom" width="300px" label="Nom :"
-          value={formData.nom}
-          onChange={handleChange}
-          fullWidth
-        />
-  
-        <CustomizedInputBase
-         placeholder="Code" width="300px" label="Code :"
-          value={formData.codeProjet}
-          onChange={handleChange}
-          fullWidth
-        />
-   
+ <CustomizedInputBase
+  placeholder="Nom"
+  name="nom"
+  width="300px"
+  label="Nom :"
+  value={formValues.nom}
+  onChange={(e) => handleChange(e)} //  fullWidth
+/>
+
+<CustomizedInputBase
+  placeholder="Code"
+  width="300px"
+  label="Code :"
+  name="codeProjet"
+  value={formValues.codeProjet}
+  onChange={(e) => handleChange(e)}
+  fullWidth
+/>
 
 </Stack>
 </Stack>

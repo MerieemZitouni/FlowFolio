@@ -18,6 +18,7 @@ import IconButton from '@mui/material/IconButton';
 import { Add } from "@material-ui/icons";
 // components
 import PageTitle from "../../components/PageTitle/PageTitle";
+import axios from 'axios';
 
 const projectData = {
   projects: [
@@ -123,6 +124,24 @@ export default function Projets() {
   );
 
   useEffect(() => {
+    
+    const token = localStorage.getItem("id_token");
+
+    axios
+      .get('http://127.0.0.1:8000/api/projet', {
+        headers: {
+          Authorization: `Token ${token}`, // Use Token format
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        // Handle the response here
+      })
+      .catch((error) => {
+        console.error(error);
+        // Handle any errors here
+      });
+
     const updateNumColumns = () => {
       const container = document.querySelector(".container");
       if (container) {
@@ -182,8 +201,8 @@ export default function Projets() {
             component={RouterLink}
             color="primary"
             startIcon={<Add />}
-            to="/app/AddProjet"
-          >
+            to="/app/AddProjet"   >
+       
             Ajouter un projet
           </Button>
       </Stack>
