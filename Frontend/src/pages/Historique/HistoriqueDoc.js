@@ -5,126 +5,258 @@ import MUIDataTable from "mui-datatables";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown"; // Import the arrow icon
 import { FilterList } from "@material-ui/icons";
 import { Add } from "@material-ui/icons";
-import { HashRouter, Route, Link as RouterLink, Link } from "react-router-dom";
-// components
-import PageTitle from "../../components/PageTitle/PageTitle";
-import Widget from "../../components/Widget/Widget";
-import Table from "../dashboard/components/Table/Table";
+import { HashRouter, Route, Link as RouterLink } from "react-router-dom";
 import Stack from '@mui/material/Stack';
-// data
-import mock from "../dashboard/mock";
-const documents=
+import { useParams } from "react-router-dom";
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
+
+
+const useStyles = makeStyles(theme => ({
+    dataTable: {
+      overflow: 'auto',
+      borderRadius: '20px',
+    },
+    button:{
+      backgroundColor: "#3A85F4",
+      borderRadius: "30px",
+      textTransform: "capitalize",
+      fontFamily: "Poppins",
+    },
+    stackButtons:{
+      marginBottom: theme.spacing(2),
+      marginTop: theme.spacing(2),
+      justifyContent: 'space-between',
+    },
+    popButton:{
+      backgroundColor :"transparent",
+      border: "none",
+      fontFamily: "Poppins",
+      cursor: "pointer",
+      "&:hover": {
+        color: "#3A85F4",
+        },
+    },
+    stackPopMenu:{
+      padding: theme.spacing(1.5),
+    },
+    popover:{
+      borderRadius: "20px",
+      "& .MuiPopover-paper":{
+        borderRadius: "20px",
+      },
+    },
+    buttonBack:{
+        
+    },
+
+
+  }))
+
+
+  const Revision=
 {
   "data": [
     {
       "Code": "001",
       "Titre": "Item 1",
-      "Révision Actuelle": "1.0",
-      "Type": "Type A",
+      "Révision": "1.0",
       "Statut": "Active"
     },
     {
       "Code": "002",
       "Titre": "Item 2",
-      "Révision Actuelle": "2.1",
-      "Type": "Type B",
+      "Révision": "2.1",
       "Statut": "Inactive"
     },
     {
       "Code": "003",
       "Titre": "Item 3",
-      "Révision Actuelle": "1.5",
-      "Type": "Type A",
+      "Révision": "1.5",
       "Statut": "Active"
     },
     {
       "Code": "004",
       "Titre": "Item 4",
-      "Révision Actuelle": "3.0",
-      "Type": "Type C",
+      "Révision": "3.0",
       "Statut": "Active"
     },
     {
       "Code": "005",
       "Titre": "Item 5",
-      "Révision Actuelle": "1.2",
-      "Type": "Type B",
+      "Révision": "1.2",
       "Statut": "Inactive"
     },
     {
       "Code": "006",
       "Titre": "Item 6",
-      "Révision Actuelle": "2.3",
-      "Type": "Type A",
+      "Révision": "2.3",
       "Statut": "Active"
     },
     {
       "Code": "007",
       "Titre": "Item 7",
-      "Révision Actuelle": "1.1",
-      "Type": "Type C",
+      "Révision": "1.1",
+      
       "Statut": "Active"
     },
     {
       "Code": "008",
       "Titre": "Item 8",
-      "Révision Actuelle": "2.0",
-      "Type": "Type B",
+      "Révision": "2.0",
       "Statut": "Inactive"
     },
     {
       "Code": "009",
       "Titre": "Item 9",
-      "Révision Actuelle": "1.8",
-      "Type": "Type A",
+      "Révision": "1.8",
       "Statut": "Active"
     },
     {
       "Code": "010",
       "Titre": "Item 10",
-      "Révision Actuelle": "3.2",
-      "Type": "Type C",
+      "Révision": "3.2",
+      
       "Statut": "Active"
     },
     {
       "Code": "011",
       "Titre": "Item 11",
-      "Révision Actuelle": "1.9",
-      "Type": "Type A",
+      "Révision": "1.9",
       "Statut": "Active"
     },
     {
       "Code": "012",
       "Titre": "Item 12",
-      "Révision Actuelle": "2.7",
-      "Type": "Type B",
+      "Révision": "2.7",
       "Statut": "Inactive"
     },
     {
       "Code": "013",
       "Titre": "Item 13",
-      "Révision Actuelle": "1.4",
-      "Type": "Type C",
+      "Révision": "1.4",
+      
       "Statut": "Active"
     },
     {
       "Code": "014",
       "Titre": "Item 14",
-      "Révision Actuelle": "3.5",
-      "Type": "Type A",
+      "Révision": "3.5",
       "Statut": "Active"
     },
     {
       "Code": "015",
       "Titre": "Item 15",
-      "Révision Actuelle": "1.3",
-      "Type": "Type B",
+      "Révision": "1.3",
       "Statut": "Inactive"
     },
    
   ]}
 
-  function ActionsDropdown({ rowData, handleDelete, handleEdit, handleComments, Code }) {
+
+
+const options = {
+    download: false, // Remove download option
+    print: false, // Remove print option
+    selectableRows: "none", // Remove checkbox selection
+    filter: true,
+    search: true, // Enable global search
+    rowsPerPage: [10],
+    textLabels: {
+      pagination: {
+        next: "Next >",
+        previous: "< Previous",
+        rowsPerPage: "Total items per page",
+        displayRows: "of",
+      },
+    },
+    onChangePage(currentPage) {
+      console.log({ currentPage });
+    },
+    onChangeRowsPerPage(numberOfRows) {
+      console.log({ numberOfRows });
+    },
+  };
+
+
+
+  function StyleData(value){return <div style={{ fontFamily: "poppins", }} >{value}</div>;}
+
+
+
+  const columns = [
+    // ... (other columns)
+    {name: "Titre",
+    label: <div style={{ fontFamily: "poppins", fontSize: 19, color: 'grey'}}>Titre</div>,
+    options: {
+      filter: true,
+      sort: true,
+      search: true, // Enable search for this column
+      customBodyRender: (value, tableMeta, updateValue) => {
+        return StyleData(value);
+      },
+    },
+  },
+  {
+    name: "Code",
+    label: <div style={{ fontFamily: "poppins", fontSize: 19, color: 'grey'}}>Code</div>,
+    options: {
+      filter: true,
+      sort: true,
+      search: true, // Enable search for this column
+      customBodyRender: (value, tableMeta, updateValue) => {
+        return StyleData(value);
+      },
+    },
+  },
+  {
+    name: "Révision",
+    label: <div style={{ fontFamily: "poppins", fontSize: 19, color: 'grey'}}>Révision</div>,
+    options: {
+      filter: true,
+      sort: true,
+      search: true, // Enable search for this column
+      customBodyRender: (value, tableMeta, updateValue) => {
+        return StyleData(value);
+      },
+    },
+  },
+  
+  {
+    name: "Statut",
+    label: <div style={{ fontFamily: "poppins", fontSize: 19, color: 'grey'}}>Statut</div>,
+    options: {
+      filter: true,
+      sort: true,
+      search: true, // Enable search for this column
+      customBodyRender: (value, tableMeta, updateValue) => {
+        return StyleData(value);
+      },
+    },
+  },
+     { name: "Actions",
+      label: <div style={{ fontFamily: "poppins", fontSize: 19, color: 'grey'}}>Actions</div>,
+      options: {
+        filter: false,
+        sort: false,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          const rowData = tableMeta.rowData;
+          return (
+            <ActionsDropdown
+              rowData={rowData}
+              handleDelete={handleDelete}
+              handleEdit={handleEdit}
+              handleHistory={handleHistory}
+              handleComments={handleComments}
+            />
+          );
+        },
+      },
+    },
+  ];
+
+
+
+  function ActionsDropdown({ rowData, handleDelete, handleEdit, handleComments, handleAddRevision, Code }) {
     const [anchorEl, setAnchorEl] = useState(null);
   
     const handlePopoverOpen = (event) => {
@@ -160,166 +292,17 @@ const documents=
           className={classes.popover}
         >
           <Stack direction="column" spacing={2} className={classes.stackPopMenu}>
-            <button className={classes.popButton} 
-            component={RouterLink}
-            to="/app/History"
-            >Historique</button>
+          <button className={classes.popButton} >Lire</button>
+            <button className={classes.popButton} onClick={() => handleDelete(rowData)}>Supprimer</button>
+            <button className={classes.popButton} onClick={() => handleEdit(rowData)}>Modifier</button>
+            <button className={classes.popButton} onClick={() => handleComments(rowData)}>Commenter</button>
+            <button className={classes.popButton}>Telecharger</button>
           </Stack>
         </Popover>
       </div>
     );
   }
-  
-  const useStyles = makeStyles(theme => ({
-    dataTable: {
-      overflow: 'auto',
-      borderRadius: '20px',
-    },
-    button:{
-      backgroundColor: "#3A85F4",
-      borderRadius: "30px",
-      textTransform: "capitalize",
-      fontFamily: "Poppins",
-    },
-    stackButtons:{
-      marginBottom: theme.spacing(2),
-      marginTop: theme.spacing(2),
-      justifyContent: 'flex-end',
-    },
-    popButton:{
-      backgroundColor :"transparent",
-      border: "none",
-      fontFamily: "Poppins",
-      fontSize: "14px",
-      cursor: "pointer",
-      "&:hover": {
-        color: "#3A85F4",
-        },
-    },
-    stackPopMenu:{
-      padding: theme.spacing(1.5),
-    },
-    popover:{
-      borderRadius: "20px",
-      "& .MuiPopover-paper":{
-        borderRadius: "20px",
-      },
-    },
 
-
-  }))
- 
-
- function StyleData(value){return <div style={{ fontFamily: "poppins", }} >{value}</div>;}
-
-  const columns = [
-    // ... (other columns)
-    {name: "Titre",
-    label: <div style={{ fontFamily: "poppins", fontSize: 19, color: 'grey'}}>Titre</div>,
-    options: {
-      filter: true,
-      sort: true,
-      search: true, // Enable search for this column
-      customBodyRender: (value, tableMeta, updateValue) => {
-        return StyleData(value);
-      },
-    },
-  },
-  {
-    name: "Code",
-    label: <div style={{ fontFamily: "poppins", fontSize: 19, color: 'grey'}}>Code</div>,
-    options: {
-      filter: true,
-      sort: true,
-      search: true, // Enable search for this column
-      customBodyRender: (value, tableMeta, updateValue) => {
-        return StyleData(value);
-      },
-    },
-  },
-  {
-    name: "Révision Actuelle",
-    label: <div style={{ fontFamily: "poppins", fontSize: 19, color: 'grey'}}>Révision Actuelle</div>,
-    options: {
-      filter: true,
-      sort: true,
-      search: true, // Enable search for this column
-      customBodyRender: (value, tableMeta, updateValue) => {
-        return StyleData(value);
-      },
-    },
-  },
-  {
-    name: "Type",
-    label: <div style={{ fontFamily: "poppins", fontSize: 19, color: 'grey'}}>Type</div>,
-    options: {
-      filter: true,
-      sort: true,
-      search: true, // Enable search for this column
-      customBodyRender: (value, tableMeta, updateValue) => {
-        return StyleData(value);
-      },
-    },
-  },
-  {
-    name: "Statut",
-    label: <div style={{ fontFamily: "poppins", fontSize: 19, color: 'grey'}}>Statut</div>,
-    options: {
-      filter: true,
-      sort: true,
-      search: true, // Enable search for this column
-      customBodyRender: (value, tableMeta, updateValue) => {
-        return StyleData(value);
-      },
-    },
-  },
-     { name: "Actions",
-      label: <div style={{ fontFamily: "poppins", fontSize: 19, color: 'grey'}}>Actions</div>,
-      options: {
-        filter: false,
-        sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          const rowData = tableMeta.rowData;
-          return (
-            <ActionsDropdown
-              rowData={rowData}
-              handleDelete={handleDelete}
-              handleEdit={handleEdit}
-              handleHistory={handleHistory}
-              handleComments={handleComments}
-              handleAddRevision={handleAddRevision}
-            />
-          );
-        },
-      },
-    },
-  ];
-  
-  
-  
-  const options = {
-    download: false, // Remove download option
-    print: false, // Remove print option
-    selectableRows: "none", // Remove checkbox selection
-    filter: true,
-    search: true, // Enable global search
-    rowsPerPage: [10],
-    textLabels: {
-      pagination: {
-        next: "Next >",
-        previous: "< Previous",
-        rowsPerPage: "Total items per page",
-        displayRows: "of",
-      },
-    },
-    onChangePage(currentPage) {
-      console.log({ currentPage });
-    },
-    onChangeRowsPerPage(numberOfRows) {
-      console.log({ numberOfRows });
-    },
-  };
-  
   function handleDelete(rowData) {
     // Implement delete action here using the rowData
     console.log("Delete clicked for row: ", rowData);
@@ -340,12 +323,11 @@ const documents=
     console.log("Comments clicked for row: ", rowData);
   }
   
-  function handleAddRevision(rowData) {
-    // Implement add revision action here using the rowData
-    console.log("Add Revision clicked for row: ", rowData);
-  }
+ 
   
-  export default function Documents() {
+
+function HistoriqueDoc() {
+   
     const classes = useStyles();
     const link = "/app/add-document";
     return (
@@ -354,12 +336,12 @@ const documents=
       <Button
       variant="contained"
       color = "primary"
-      startIcon={<FilterList />}
-      className={classes.button}
+      startIcon={<ArrowBackRoundedIcon />}
+      className={`${classes.button} ${classes.buttonBack}`}
       component={RouterLink}
-      to="/app/History"
+      to='/app/Documents'
     >
-      Filtrer
+      Retourner vers documents
     </Button>
     <Button
       variant="contained"
@@ -376,8 +358,8 @@ const documents=
        <Grid container spacing={4}>
           <Grid item xs={12} >
             <MUIDataTable
-              title=<div style={{ fontFamily: "poppins", fontSize: 30, fontWeight:"bold" }}>Documents</div>
-              data={documents.data}
+              title=<div style={{ fontFamily: "poppins", fontSize: 30, fontWeight:"bold" }}>Historique</div>
+              data={Revision.data}
               columns={columns}
               options={options}
               className={classes.dataTable}
@@ -387,4 +369,5 @@ const documents=
         
     </>
     );
-  }
+};
+export default HistoriqueDoc;   

@@ -37,6 +37,7 @@ import FormDoc from "../../pages/formDoc/FormDoc";
 import AddProjet from "../AddProjet/AddProjet";
 // context
 import { useLayoutState } from "../../context/LayoutContext";
+import HistoriqueDoc from "../../pages/Historique/HistoriqueDoc";
 
 function Layout(props) {
   var classes = useStyles();
@@ -64,6 +65,8 @@ function Layout(props) {
               <Route path="/app/notifications" component={Notifications} />
               <Route path="/app/Users" component={Users} />
              <Route path="/app/add-document" component={FormDoc} />
+             <Route  path="/app/History" component={HistoriqueDoc} />
+
                {/* Wrap AddProjet with FormProvider */}
               <FormProvider>
               <Route path="/app/AddProjet" component={AddProjet} />

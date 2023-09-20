@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/styles";
 
-const drawerWidth = 240;
+const drawerWidth = 170;
 
 export default makeStyles(theme => ({
   menuButton: {
@@ -14,6 +14,15 @@ export default makeStyles(theme => ({
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: "nowrap",
+    "& .MuiDrawer-paper":
+              {
+                marginTop: theme.spacing(8.25),
+                borderRadius:"0px 70px 70px 0px",
+                marginLeft: theme.spacing(0),
+                height: "91.75vh",
+                backgroundColor:"#3A85F4",
+                border:"none"
+              },
   },
   drawerOpen: {
     width: drawerWidth,
@@ -21,14 +30,16 @@ export default makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    borderRadius:"40px",
   },
   drawerClose: {
+    borderRadius:"40px",
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
     overflowX: "hidden",
-    width: theme.spacing(7) + 40,
+    width: theme.spacing(7) + 15,
     [theme.breakpoints.down("sm")]: {
       width: drawerWidth,
     },
@@ -47,7 +58,6 @@ export default makeStyles(theme => ({
     marginTop: theme.spacing(6),
   }, */
   mobileBackButton: {
-    marginTop: theme.spacing(0.5),
     marginLeft: 18,
     [theme.breakpoints.only("sm")]: {
       marginTop: theme.spacing(0.625),

@@ -7,11 +7,12 @@ import {
   ListItemIcon,
   ListItemText,
   Typography,
+  Box,
 } from "@material-ui/core";
 import { Inbox as InboxIcon } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import classnames from "classnames";
-
+import Stack from '@mui/material/Stack';
 // styles
 import useStyles from "./styles";
 
@@ -84,6 +85,7 @@ export default function SidebarLink({
   }
   if (!children)
     return (
+      
       <ListItem
         button
         component={link && Link}
@@ -97,13 +99,11 @@ export default function SidebarLink({
         }}
         disableRipple
       >
-        <ListItemIcon
-          className={classnames(classes.linkIcon, {
-            [classes.linkIconActive]: isLinkActive,
-          })}
-        >
-          {nested ? <Dot color={isLinkActive && "primary"} /> : icon}
-        </ListItemIcon>
+       
+        {nested ? <Dot color={isLinkActive && "primary"} /> : <div 
+         className={classnames(classes.linkIcon, {
+          [classes.linkIconActive]: isLinkActive,
+        })}>{icon}</div>}
         <ListItemText
           classes={{
             primary: classnames(classes.linkText, {

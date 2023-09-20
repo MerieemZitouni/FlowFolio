@@ -24,6 +24,8 @@ import { Add } from "@material-ui/icons";
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import {useDropzone} from 'react-dropzone';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
+import CloudDoneOutlinedIcon from '@mui/icons-material/CloudDoneOutlined';
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import {
     Grid,
     Card,
@@ -46,6 +48,7 @@ import {
       margin: theme.spacing(3),
       marginLeft: theme.spacing(20),
       width: '400px',
+      height: '200px',
     },
     dragText:{
       fontFamily:'Poppins',
@@ -68,41 +71,45 @@ import {
       justifyContent:'center',
       marginBottom: theme.spacing(2),
     },
+    fileName:{
+      width:375,
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      fontFamily:'Poppins',
+      textAlign: 'center',
+    },
 
   }));
 
-  function DragDropFile(props) {
+  function DragDropFile({onInputValueChange}) {
     const classes = useStyles();
+    //file upload
+    const [fileName, setFileName] = React.useState(null);
     const onDrop = (acceptedFiles) => {
-      acceptedFiles.forEach((file) => {
-        console.log(file.preview);
-        const imgPrev = new Image();
-        imgPrev.src = file.preview;
-      });
-    };
-  
-    const { getRootProps, getInputProps } = useDropzone({ onDrop });
-
-    const handleBrowseClick = () => {
-      const fileInput = document.createElement('input');
-      fileInput.type = 'file';
-      fileInput.accept = '*'; 
-      fileInput.click();
-  
-      fileInput.addEventListener('change', (e) => {
-        const selectedFile = e.target.files[0];
-        if (selectedFile) {
-          
-          ///Traitement du fichier
-
-          console.log('Selected File:', selectedFile);
+      if (acceptedFiles.length === 1) {
+        if (fileName === null) {
+          setFileName(acceptedFiles[0].name);
+          onInputValueChange(acceptedFiles[0].name); // Update the value when a file is dropped
+        } else {
+          setFileName(null);
+          onInputValueChange(null); // Clear the value when the file is removed
         }
-      });
+      }
+      };
+    const handleChange = (e) => {
+      const newValue = e.target.value;
+      
+      onInputValueChange(newValue);
     };
+    const { getRootProps, getInputProps } = useDropzone({ onDrop, maxFiles: 1 });
+
+    
     return (
-      <Box sx={{border:'2.25px dotted #3A85F4',}} 
-      className={classes.mainBox} {...getRootProps()}>
-        <input {...getInputProps()} />
+      <Box>
+      {fileName === null?(<Box sx={{border:'2.25px dotted #3A85F4',}}  {...getRootProps()}
+      className={classes.mainBox} >
+      <input {...getInputProps()} />
         <div className={classes.dragBox}>
         <CloudUploadOutlinedIcon sx={{fontSize:'70px',color:'#3A85F4',}}/>
         <Typography className={classes.dragText} variant="body1">Glissez-Déposez le fichier ici</Typography>
@@ -115,15 +122,27 @@ import {
           >
             Parcourir
           </Button>
-
+      </Box> ) :
+       (<Box sx={{border:'2px solid #3A85F4',}} 
+       className={classes.mainBox} >
+         <div className={classes.dragBox}>
+         <CloudDoneOutlinedIcon sx={{fontSize:'120px',color:'#3A85F4',}}/>
+         <Typography className={classes.fileName} variant="body1">{fileName}</Typography>
+         </div>
+       </Box>)}
       </Box>
     );
   }
 
 
-function StepThree(){
+function StepThree({formData, setFormData}){
     return(
-      <DragDropFile/>
+      <DragDropFile
+      onInputValueChange={(newValue) => {
+        
+        setFormData({ ...formData, FileName: newValue });
+      }}
+      />
     );
 };
 export default StepThree;

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Drawer, IconButton, List } from "@material-ui/core";
 import {
-  Home as HomeIcon,
   NotificationsNone as NotificationsIcon,
   FormatSize as TypographyIcon,
   FilterNone as UIElementsIcon,
@@ -15,6 +14,7 @@ import {
   HelpOutline as FAQIcon,
   ArrowBack as ArrowBackIcon,
 } from "@material-ui/icons";
+import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
 import { useTheme } from "@material-ui/styles";
 import { withRouter } from "react-router-dom";
 import classNames from "classnames";
@@ -56,9 +56,9 @@ const structure = [
   },
   {
     id: 4,
-    label: "Acceuil",
+    label: "À propos",
     link: "/app/ui",
-    icon: <HomeIcon />,
+    icon: <HelpRoundedIcon />,
    
   },
   
@@ -86,7 +86,7 @@ function Sidebar({ location }) {
   return (
 
     <Drawer  
-
+    
       variant={isPermanent ? "permanent" : "temporary"}
       className={classNames(classes.drawer, {
         [classes.drawerOpen]: isSidebarOpened,

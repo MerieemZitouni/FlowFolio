@@ -23,6 +23,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import StepOne from './Step1';
 import StepTwo from './Step2';
 import StepThree from './Step3';
+import {Link as RouterLink } from "react-router-dom";
 import {
   Grid,
   Card,
@@ -36,59 +37,10 @@ import {
 } from "@material-ui/core";
 
 
-const QontoStepIconRoot = styled('div')(({ theme, ownerState }) => ({
-  color: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#eaeaf0',
-  display: 'flex',
-  height: 22,
-  alignItems: 'center',
-  ...(ownerState.active && {
-    color: '#3A85F4',
-  }),
-  '& .QontoStepIcon-completedIcon': {
-    color: '#3A85F4',
-    zIndex: 1,
-    fontSize: 30,
-  },
-  '& .QontoStepIcon-circle': {
-    width: 13,
-    height: 13,
-    borderRadius: '50%',
-    backgroundColor: 'currentColor',
-  },
-}));
-
-function QontoStepIcon(props) {
-  const { active, completed, className } = props;
-
-  return (
-    <QontoStepIconRoot ownerState={{ active }} className={className}>
-      {completed ? (
-        <Check className="QontoStepIcon-completedIcon" />
-      ) : (
-        <div className="QontoStepIcon-circle" />
-      )}
-    </QontoStepIconRoot>
-  );
-}
-
-QontoStepIcon.propTypes = {
-  /**
-   * Whether this step is active.
-   * @default false
-   */
-  active: PropTypes.bool,
-  className: PropTypes.string,
-  /**
-   * Mark the step as completed. Is passed to child components.
-   * @default false
-   */
-  completed: PropTypes.bool,
-};
-
 const useStyles = makeStyles((theme) => ({
 stepper: {
   top: 0,
-  marginLeft: theme.spacing(20),
+  marginLeft: theme.spacing(35),
 },
 labelStep:{
   fontFamily: "poppins Light",
@@ -107,16 +59,28 @@ buttonRet:{
   color: "#A1A1A1",
 },
 buttonGroup:{
-  marginLeft: theme.spacing(20),
+  marginLeft: theme.spacing(35),
 },
 mainStack:{
   display: "flex",
+  flexDirection:"column",
+  alignItems:"center",
 },
 circle:{
   color: "#3A85F4",
 },
 activeStep:{
   color: "#3A85F4",
+},
+buttonRetDoc:{
+ padding: "7px",
+ fontSize: 15,
+},
+stackValid:{
+ marginLeft: theme.spacing(35),
+},
+validMsg:{
+  fontFamily:'poppins',
 },
 
 }));
@@ -127,6 +91,7 @@ function styleSteps( str) {
 
 
 function FormDoc() {
+
   const [activeStep, setActiveStep] = React.useState(0);
 
   const handleNext = () => {
@@ -143,12 +108,33 @@ function FormDoc() {
   const steps = [{label:'Informations sur le document'}, {label:'Ajoutez des commentateurs'},
    {label:'Insérez le document'}];
   const classe1 = useStyles();
-  return (
+
+
+
+  const [formData, setFormData] = React.useState({
+    stepOneData: {
+      Code: '',
+      Titre: '',
+      Type: '',
+      Revision: '',
+      Statut: '',
+    },
+    stepTwoData:{
+      Commentateurs:[],
+    },
+    stepThreeData:{
+      FileName:'',
+    }
     
+  });
+  
+  console.log(formData);
+
+  return (
     <Stack sx={{marginTop: 0}}className={classe1.mainStack} spacing={2} direction="row" alignItems="center">
+     
 
-
-       <Box>
+       <Box className={classe1.mainStack}>
       <Stepper activeStep={activeStep} orientation="vertical" className={classe1.stepper}>
         {steps.map((step, index) => (
           <Step key={index}>
@@ -162,7 +148,13 @@ function FormDoc() {
               <div className={classe1.labelStep}>{step.label}</div>
             </StepLabel>
             <StepContent>
-            <div> {index === 0 ? ( <StepOne />): index ===1?(<StepTwo/>) :(<StepThree/> )}</div>
+            <div> {index === 0 ? ( <StepOne 
+            formData={formData.stepOneData} setFormData={(data) => setFormData({ ...formData, stepOneData: data })}
+            />): index ===1?(<StepTwo
+              
+            />) :(<StepThree
+              formData={formData.stepThreeData} setFormData={(data) => setFormData({ ...formData, stepThreeData: data })}
+            /> )}</div>
               <Box sx={{ mb: 0 }}>
                 <Stack direction="row" spacing={1.5} className={classe1.buttonGroup}>
                 <div> {index === 2 ? ( 
@@ -204,9 +196,21 @@ function FormDoc() {
         ))}
       </Stepper>
       {activeStep === steps.length && (
-        <Paper square elevation={0} sx={{ p: 3,borderRadius: '13px',margin:15}}>
-          <Typography >Document ajouté avec succés</Typography>
+        <Stack sx={{width:"300px",marginTop:"50px",}} className={classe1.stackValid} direction="column" spacing={4} >
+        <Paper square elevation={0} sx={{ p: 3,borderRadius: '30px',margin:15}}>
+          <Typography className={classe1.validMsg} >Document ajouté avec succés</Typography>
         </Paper>
+        <Button
+        variant="contained"
+         color = "primary"
+         className={`${classe1.buttonCont} ${classe1.buttonRetDoc}`}
+         to='/app/Documents'
+         component={RouterLink}
+           >
+             Retourner vers Documents
+       </Button>
+       </Stack>
+
       )}
     </Box>
       </Stack>

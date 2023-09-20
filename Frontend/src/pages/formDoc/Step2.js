@@ -73,7 +73,10 @@ const useStyles = makeStyles((theme) => ({
       textLabel:{
         fontFamily: 'Poppins',
         fontWeight: 'bold',
-        fontSize: 13,
+        fontSize: 11.5,
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        width:150,
       },
       mainStack:{
         display: 'flex',
@@ -84,6 +87,7 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: theme.spacing(17),
         justifyContent: 'space-between',
         alignItems: 'center',
+        height: 55,
       },
 }));
 

@@ -2,10 +2,20 @@ import { makeStyles } from "@material-ui/styles";
 
 export default makeStyles(theme => ({
   link: {
+    marginBottom: theme.spacing(3),
     textDecoration: "none",
     "&:hover, &:focus": {
-      backgroundColor: theme.palette.background.light,
+        backgroundColor: "#f6f7ff",
+        borderRadius: "70px 0px 0px 70px",
+        color: "#3A85F4",
     },
+    display: "flex",
+    justifyContent: "flex-start",
+  },
+  title:{
+    "&:hover, &:focus": {
+      color: "#3A85F4",
+      },
   },
   externalLink: {
     display: 'flex',
@@ -14,7 +24,7 @@ export default makeStyles(theme => ({
     textDecoration: 'none'
   },
   linkActive: {
-    backgroundColor: theme.palette.background.light,
+    
   },
   linkNested: {
     paddingLeft: 0,
@@ -23,25 +33,37 @@ export default makeStyles(theme => ({
     },
   },
   linkIcon: {
-    marginRight: theme.spacing(1),
-    color: theme.palette.text.secondary + "99",
+    color: "#FFFFFF",
     transition: theme.transitions.create("color"),
-    width: 24,
+    width: 30,
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "flex-start",
+    marginRight: theme.spacing(1),
+  
   },
   linkIconActive: {
-    color: "#3A85F4",
+    color: "#FFFFFF",
+    fontSize: 40,
+    "&:hover, &:focus": {
+      color: "#3A85F4",
+      },
   },
   linkText: {
     padding: 0,
-    color: theme.palette.text.secondary + "CC",
+    color: "#FFFFFF",
     transition: theme.transitions.create(["opacity", "color"]),
     fontSize: 16,
     fontFamily:'poppins',
+    display: "flex",
+    justifyContent: "flex-start",
+    textIndent: 0,
+    "&:hover, &:focus": {
+      color: "#3A85F4",
+      },
+
   },
   linkTextActive: {
-    color: "#3A85F4",
+    color: "#FFFFFF",
   },
   linkTextHidden: {
     opacity: 0,
@@ -53,6 +75,7 @@ export default makeStyles(theme => ({
     marginLeft: theme.spacing(4.5),
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
+    
   },
   divider: {
     marginTop: theme.spacing(2),

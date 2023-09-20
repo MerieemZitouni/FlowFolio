@@ -58,8 +58,9 @@ textInput: {
   },
   textLabel:{
     fontFamily: 'Poppins',
-    color: '#3A85F4',
+    fontWeight: 'bold',
     fontStyle: 'italic',
+    color: '#3A85F4',
     fontSize: 15,
   },
   Select:{
@@ -84,8 +85,15 @@ textInput: {
 }));
 
 
-function CustomizedInputBase({placeholder,width,label}) {
+function CustomizedInputBase({placeholder,width,label,onInputValueChange, value}) {
   const classes = useStyles();
+
+  const handleChange = (e) => {
+    const newValue = e.target.value;
+    
+    onInputValueChange(newValue);
+  };
+
   return (
     <Paper
       component="form"
@@ -96,7 +104,11 @@ function CustomizedInputBase({placeholder,width,label}) {
         sx={{ ml: 1, flex: 1 }}
         placeholder={placeholder}
         inputProps={{ 'aria-label': 'Recherche' ,className:classes.textInput }}
+        //afficher la valeur
+        value={value} 
+        onChange={handleChange} 
       />
+      
     </Paper>
   );
 }
@@ -106,26 +118,39 @@ const statutCase = ['Approuvé', 'En attente', 'Rejeté'];
 const revCase = ['A0','A1','A2', 'A3', 'A4', 'A5', 'A6', 'A7',
  'A8', 'A9','B0','B1','B2', 'B3', 'B4', 'B5', 'B6', 'B7','B8', 'B9','D','F'];
 
-function CustomizedSelect({array,typeInput}) {
+
+
+
+
+
+
+function CustomizedSelect({array,typeInput,onInputValueChange, value}) {
   const classes = useStyles();
   const [val, setVal] = React.useState('');
- 
-  const handleChange = (event) => {
-    setVal(event.target.value);
+
+  const handleChange = (e) => {
+    const newValue = e.target.value;
+    
+    onInputValueChange(newValue);
   };
+
   return (
     <Paper component="form"
     sx={{ p: '2px 1px', display: 'flex',justifyContent:'space-between',borderRadius: '11px',
      alignItems: 'center', width: "300px",height: "45px"}}>
       <InputLabel>
-       {val ? ( <div className={classes.selectLabel}>{val}</div>) : 
-       ( <div className={classes.selectLabelWithVal}>{typeInput}</div>)}
+      {value ? (
+          <div className={classes.selectLabel}>{value}</div>
+        ) : (
+          <div className={classes.selectLabelWithVal}>{typeInput}</div>
+        )}
       </InputLabel>
 
         <Select
-          value=''
           label={typeInput}
-          onChange={handleChange}
+          //afficher la valeur
+          value=''
+           onChange={handleChange}
           className={classes.Select}
           sx={{
             boxShadow: "none",
@@ -170,7 +195,7 @@ function CustomizedSelect({array,typeInput}) {
 
 
 
-function StepOne() {
+function StepOne({ formData, setFormData }) {
   const classe1 = useStyles();
   return (
     
@@ -185,11 +210,47 @@ function StepOne() {
       </Stack>
 
       <Stack spacing={2} direction="column" >
-      <CustomizedInputBase placeholder="Code" width="300px" label="Code :" />
-      <CustomizedInputBase placeholder="Titre" width="300px" label="Titre   :" />
-      <CustomizedSelect array={typeDoc} typeInput="Type de document" />
-      <CustomizedSelect array={revCase} typeInput="Révision" />
-      <CustomizedSelect  array={statutCase} typeInput="Statut" />
+      <CustomizedInputBase placeholder="Code" width="300px" label="Code :"
+      onInputValueChange={(newValue) => {
+        
+        setFormData({ ...formData, Code: newValue });
+      }}
+      
+      value={formData.Code || ''}
+
+      />
+      <CustomizedInputBase placeholder="Titre" width="300px" label="Titre   :"
+      onInputValueChange={(newValue) => {
+        
+        setFormData({ ...formData, Titre: newValue });
+      }}
+      
+      value={formData.Titre || ''}
+      />
+      <CustomizedSelect array={typeDoc} typeInput="Type de document"
+      onInputValueChange={(newValue) => {
+        
+        setFormData({ ...formData, Type: newValue });
+      }}
+      
+      value={formData.Type || ''}
+      />
+      <CustomizedSelect array={revCase} typeInput="Révision"
+      onInputValueChange={(newValue) => {
+        
+        setFormData({ ...formData, Revision: newValue });
+      }}
+      
+      value={formData.Revision || ''}
+      />
+      <CustomizedSelect  array={statutCase} typeInput="Statut" 
+      onInputValueChange={(newValue) => {
+        
+        setFormData({ ...formData, Statut: newValue });
+      }}
+      
+      value={formData.Statut || ''}
+      />
 
       </Stack>
       </Stack>
