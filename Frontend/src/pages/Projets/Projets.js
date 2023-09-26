@@ -20,30 +20,7 @@ import { Add } from "@material-ui/icons";
 import PageTitle from "../../components/PageTitle/PageTitle";
 import axios from 'axios';
 
-const projectData = {
-  projects: [
-    {
-      name: "Project A",
-      code: "P12345",
-    },
-    {
-      name: "Project B",
-      code: "P23456",
-    },
-    {
-      name: "Project C",
-      code: "P34567",
-    },
-    {
-      name: "Project D",
-      code: "P45678",
-    },
-    {
-      name: "Project E",
-      code: "P56789",
-    },
-  ],
-};
+
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -120,7 +97,7 @@ export default function Projets() {
   const [numColumns, setNumColumns] = useState(3);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProjects, setFilteredProjects] = useState(
-    projectData.projects
+   []
   );
 
   useEffect(() => {
@@ -135,6 +112,7 @@ export default function Projets() {
       })
       .then((response) => {
         console.log(response);
+        setFilteredProjects(response.data);
         // Handle the response here
       })
       .catch((error) => {
@@ -164,9 +142,9 @@ export default function Projets() {
   }, []);
 
   useEffect(() => {
-    const filtered = projectData.projects.filter(
+    const filtered = filteredProjects.filter(
       (project) =>
-        project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        project.nom.toLowerCase().includes(searchQuery.toLowerCase()) ||
         project.code.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredProjects(filtered);
@@ -224,11 +202,11 @@ export default function Projets() {
               <CardContent className={classes.cardContent}>
                 <Stack spacing={0} direction="row" className={classes.Stack}>
                   <div>
-                  <Typography className={classes.nameText} variant="body1">{project.name}</Typography>
+                  <Typography className={classes.nameText} variant="body1">{project.nom}</Typography>
                   <Typography className={classes.codeText} variant="body1">{project.code}</Typography>
                   </div>
                   <RouterLink
-                    to={`/app/project/${project.code}`}
+                    to={`/app/project/${project.id}`}
                     className={classes.RouterLink}
                   >
                     <DoubleArrow className={classes.linkIcon}/>

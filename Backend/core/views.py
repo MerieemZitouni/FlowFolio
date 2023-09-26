@@ -103,3 +103,19 @@ class projets(APIView):
         queryset = Projet.objects.all()
         serializer = ProjetSerializer(queryset, many=True)  # Serialize the queryset
         return Response(serializer.data)  # Pass the serialized data to the Response object
+
+class document_prjt(APIView,):
+    permission_classes = [permissions.IsAuthenticated]
+    def get(self, request,project_id):
+        queryset = Document.objects.filter(projet=project_id)
+        serializer = DocumentSerializer(queryset, many=True)  # Serialize the queryset
+        return Response(serializer.data)  # Pass the serialized data to the Response object
+
+class AddDocument(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        data = request.data
+        print(data)
+       
+        return Response({"message": "Document added successfully"}, status=status.HTTP_201_CREATED)

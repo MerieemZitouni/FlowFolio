@@ -23,6 +23,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import StepOne from './Step1';
 import StepTwo from './Step2';
 import StepThree from './Step3';
+import axios from 'axios';
 import {Link as RouterLink } from "react-router-dom";
 import {
   Grid,
@@ -89,7 +90,6 @@ function styleSteps( str) {
 }
 
 
-
 function FormDoc() {
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -130,6 +130,29 @@ function FormDoc() {
   
   console.log(formData);
 
+ 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setActiveStep(activeStep + 1);
+
+    const token = localStorage.getItem("id_token");
+
+    axios
+      .post('http://127.0.0.1:8000/api/addDocument', formData, {
+        headers: {
+          Authorization: `Token ${token}`, // Use Token format
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        // Handle the response here
+      })
+      .catch((error) => {
+        console.error(error);
+        // Handle any errors here
+      });
+  };
+
   return (
     <Stack sx={{marginTop: 0}}className={classe1.mainStack} spacing={2} direction="row" alignItems="center">
      
@@ -162,8 +185,10 @@ function FormDoc() {
                   variant="contained"
                    color = "primary"
                    className={classe1.buttonCont}
-                   onClick={handleNext}
-                     >
+                   onClick={(e) => {
+                    handleNext(e);
+                    handleSubmit(e);
+                  }}                     >
                        Valider
                  </Button>
                 ): (

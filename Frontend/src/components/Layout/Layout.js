@@ -57,14 +57,14 @@ function Layout(props) {
           >
             <div className={classes.fakeToolbar} />
             <Switch>   
-            <Route   path="/app/project/:code" component={ProjectPage} />
+            <Route   path="/app/project/:id" component={ProjectPage} />
 
               <Route path="/app/dashboard" component={Dashboard} />
               <Route path="/app/Projets" component={Projets} />
               <Route path="/app/Documents" component={Documents} />
               <Route path="/app/notifications" component={Notifications} />
               <Route path="/app/Users" component={Users} />
-             <Route path="/app/add-document" component={FormDoc} />
+             <Route path="/app/add-document/:id" component={FormDoc} />
              <Route  path="/app/History" component={HistoriqueDoc} />
 
                {/* Wrap AddProjet with FormProvider */}
